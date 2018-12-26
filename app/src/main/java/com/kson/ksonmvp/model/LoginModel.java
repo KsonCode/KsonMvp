@@ -31,6 +31,7 @@ public class LoginModel implements IloginModel {
     public void login(HashMap<String, String> params, final RequestCallback callback) {
 
 
+        //新代码
 
         //okhttp网络框架的管理类
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
