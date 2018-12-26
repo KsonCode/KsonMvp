@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">KsonMvp</string>
+    <string name="user_login">登录</string>
+</resources>
