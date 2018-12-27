@@ -19,7 +19,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.RegActivity"></activity>
+        <activity android:name=".activity.RegActivity" />
+        <activity android:name=".activity.OkhttpActivity"></activity>
     </application>
 
 </manifest>
