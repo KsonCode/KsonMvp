@@ -5,7 +5,6 @@ import com.kson.ksonmvp.entity.UserEntity;
 import com.kson.ksonmvp.model.LoginModel;
 import com.kson.ksonmvp.net.RequestCallback;
 import com.kson.ksonmvp.utils.ValidatorUtil;
-import com.kson.ksonmvp.view.IloginView;
 
 import java.util.HashMap;
 

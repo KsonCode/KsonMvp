@@ -10,7 +10,6 @@ import com.kson.ksonmvp.contract.user.ILoginContract;
 import com.kson.ksonmvp.entity.UserEntity;
 import com.kson.ksonmvp.net.OkhttpUtils;
 import com.kson.ksonmvp.presenter.LoginPresenter;
-import com.kson.ksonmvp.view.IloginView;
 
 import java.util.HashMap;
 
