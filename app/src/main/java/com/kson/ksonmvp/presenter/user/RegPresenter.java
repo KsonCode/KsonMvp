@@ -26,7 +26,7 @@ public class RegPresenter extends IRegContract.RegPresenter {
      */
     @Override
     public void register(HashMap<String, String> params) {
-        String mobile = params.get("mogile");
+        String mobile = params.get("mobile");
         if (!ValidatorUtil.isMobile(mobile)) {
             if (iRegView != null) {
                 iRegView.mobileError("手机号不合法");

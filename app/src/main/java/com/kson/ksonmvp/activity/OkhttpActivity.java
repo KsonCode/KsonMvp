@@ -7,6 +7,7 @@ import android.view.View;
 import com.kson.ksonmvp.R;
 import com.kson.ksonmvp.api.UserApi;
 import com.kson.ksonmvp.entity.UserEntity;
+import com.kson.ksonmvp.net.OkhttpCallback;
 import com.kson.ksonmvp.net.OkhttpUtils;
 import com.kson.ksonmvp.net.RequestCallback;
 
@@ -35,21 +36,13 @@ public class OkhttpActivity extends AppCompatActivity {
     public void getRequest(View view) {
 
 
-        OkhttpUtils.getInstance().doGet(UserApi.USER_GET_GETUSERINNFO, new RequestCallback() {
+        OkhttpUtils.getInstance().doGet(UserApi.USER_GET_GETUSERINNFO, new OkhttpCallback() {
             @Override
             public void failure(String msg) {
 
             }
 
-            @Override
-            public void successMsg(String msg) {
 
-            }
-
-            @Override
-            public void success(UserEntity userEntity) {
-
-            }
 
             @Override
             public void success(String result) {

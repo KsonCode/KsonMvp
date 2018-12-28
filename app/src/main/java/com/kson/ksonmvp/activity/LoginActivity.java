@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.kson.ksonmvp.R;
+import com.kson.ksonmvp.contract.user.ILoginContract;
 import com.kson.ksonmvp.entity.UserEntity;
 import com.kson.ksonmvp.net.OkhttpUtils;
 import com.kson.ksonmvp.presenter.LoginPresenter;
@@ -13,7 +14,7 @@ import com.kson.ksonmvp.view.IloginView;
 
 import java.util.HashMap;
 
-public class LoginActivity extends AppCompatActivity implements IloginView {
+public class LoginActivity extends AppCompatActivity implements ILoginContract.IloginView {
 
     private LoginPresenter presenter;
 

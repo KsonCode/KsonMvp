@@ -1,5 +1,6 @@
 package com.kson.ksonmvp.presenter;
 
+import com.kson.ksonmvp.contract.user.ILoginContract;
 import com.kson.ksonmvp.entity.UserEntity;
 import com.kson.ksonmvp.model.LoginModel;
 import com.kson.ksonmvp.net.RequestCallback;
@@ -8,12 +9,12 @@ import com.kson.ksonmvp.view.IloginView;
 
 import java.util.HashMap;
 
-public class LoginPresenter {
+public class LoginPresenter extends ILoginContract.LoginPresenter {
 
     private LoginModel loginModel;
-    private IloginView iloginView;
+    private ILoginContract.IloginView iloginView;
 
-    public LoginPresenter(IloginView iloginView){
+    public LoginPresenter(ILoginContract.IloginView iloginView){
         loginModel = new LoginModel();
         this.iloginView = iloginView;
 

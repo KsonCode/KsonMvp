@@ -3,9 +3,6 @@ package com.kson.ksonmvp.net;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.kson.ksonmvp.api.UserApi;
-import com.kson.ksonmvp.interceptor.AppInterceptor;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -36,7 +33,6 @@ public class OkhttpUtils {
 
 
     private OkhttpUtils() {//私有构造方法
-        new Handler(Looper.getMainLooper());
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         okHttpClient = new OkHttpClient.Builder()

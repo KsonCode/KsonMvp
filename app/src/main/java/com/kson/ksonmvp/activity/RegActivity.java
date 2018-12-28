@@ -3,11 +3,11 @@ package com.kson.ksonmvp.activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.kson.ksonmvp.R;
 import com.kson.ksonmvp.contract.user.IRegContract;
 import com.kson.ksonmvp.presenter.user.RegPresenter;
-import com.kson.ksonmvp.view.user.IRegView;
 
 import java.util.HashMap;
 
@@ -43,15 +43,19 @@ public class RegActivity extends AppCompatActivity implements IRegContract.IRegV
     @Override
     public void mobileError(String error) {
 
+        Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
     public void success(String result) {
-
+        Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void failure(String msg) {
+
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
 
     }
 
