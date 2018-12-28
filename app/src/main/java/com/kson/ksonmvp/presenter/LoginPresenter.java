@@ -23,8 +23,8 @@ public class LoginPresenter {
     public void login(HashMap<String,String> params) {
         //正则表达式校验
 
-        String mobile ="18612991023";
-        String password = "11111111";
+        String mobile =params.get("mobile");
+        String password = params.get("password");
         if (!ValidatorUtil.isMobile(mobile)){
             if (iloginView!=null){
                 iloginView.mobileError("请输入合法手机号");
@@ -52,6 +52,11 @@ public class LoginPresenter {
                 public void success(UserEntity userEntity) {
                     if (iloginView!=null)
                     iloginView.success(userEntity);
+
+                }
+
+                @Override
+                public void success(String result) {
 
                 }
             });

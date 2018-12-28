@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.kson.ksonmvp.R;
 import com.kson.ksonmvp.entity.UserEntity;
+import com.kson.ksonmvp.net.OkhttpUtils;
 import com.kson.ksonmvp.presenter.LoginPresenter;
 import com.kson.ksonmvp.view.IloginView;
 
@@ -32,15 +33,16 @@ public class LoginActivity extends AppCompatActivity implements IloginView {
 
     /**
      * 点击，登录
+     *
      * @param view
      */
     public void login(View view) {
 
-        HashMap<String,String> params = new HashMap<>();
-        params.put("mobile","18612991023");
-        params.put("password","111111");
+        HashMap<String, String> params = new HashMap<>();
+        params.put("mobile", "18612991023");
+        params.put("password", "222222");
 
-        if (presenter!=null){
+        if (presenter != null) {
             presenter.login(params);
         }
 
@@ -48,28 +50,35 @@ public class LoginActivity extends AppCompatActivity implements IloginView {
 
     @Override
     public void mobileError(String msg) {
-        Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void pwdError(String msg) {
-        Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void failure(String msg) {
-        Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void success(UserEntity userEntity) {
 //        String uid = userEntity.data.uid;
-        Toast.makeText(this,userEntity.msg+"",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, userEntity.msg + "", Toast.LENGTH_SHORT).show();
 
     }
 
     @Override
     public void successMsg(String msg) {
-        Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        OkhttpUtils.getInstance().cancelAllTask();//取消任务
     }
 }

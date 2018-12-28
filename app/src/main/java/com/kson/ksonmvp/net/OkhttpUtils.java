@@ -1,9 +1,12 @@
 package com.kson.ksonmvp.net;
 
 import android.os.Handler;
+import android.os.Looper;
 
 import com.kson.ksonmvp.api.UserApi;
+import com.kson.ksonmvp.interceptor.AppInterceptor;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,14 +15,20 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 
+/**
+ * okhttp二次封装，封装网络框架
+ */
 public class OkhttpUtils {
 
-    Handler handler = new Handler();
+    private Handler handler  = new Handler() ;
 
     private OkHttpClient okHttpClient;
 
@@ -27,8 +36,11 @@ public class OkhttpUtils {
 
 
     private OkhttpUtils() {//私有构造方法
-
+        new Handler(Looper.getMainLooper());
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(loggingInterceptor)//添加日志拦截器
                 .writeTimeout(5, TimeUnit.SECONDS)
                 .connectTimeout(5, TimeUnit.SECONDS)
                 .readTimeout(5, TimeUnit.SECONDS)
@@ -39,7 +51,7 @@ public class OkhttpUtils {
 
 
     /**
-     * 创建实例,双重检验锁
+     * 创建实例,双重检验锁，单例模式进行实例化
      *
      * @return
      */
@@ -60,8 +72,7 @@ public class OkhttpUtils {
     /**
      * get请求方式
      */
-    public void doGet(String url, final RequestCallback requestCallback) {
-
+    public void doGet(String url, final OkhttpCallback requestCallback) {
 
         Request request = new Request.Builder().url(url)
                 .get().build();
@@ -76,21 +87,17 @@ public class OkhttpUtils {
                             requestCallback.failure("网络异常");
                         }
                     });
-
                 }
             }
 
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
+                final String result = response.body().string();
                 if (requestCallback != null) {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            try {
-                                requestCallback.success(response.body().string());
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                            requestCallback.success(result);
 
                         }
                     });
@@ -104,7 +111,7 @@ public class OkhttpUtils {
     /**
      * Post请求方式
      */
-    public void doPost(String url, HashMap<String, String> parmas) {
+    public void doPost(String url, HashMap<String, String> parmas, final OkhttpCallback callback) {
 
         FormBody.Builder builder = new FormBody.Builder();
 
@@ -122,15 +129,98 @@ public class OkhttpUtils {
             @Override
             public void onFailure(Call call, IOException e) {
 
+                if (callback != null) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            callback.failure("网络异常");
+                        }
+                    });
+
+                }
+
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
+            public void onResponse(Call call, final Response response) throws IOException {
+
+                if (callback != null) {
+                    if (200 == response.code()) {
+                        final String result = response.body().string();
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                callback.success(result);
+                            }
+                        });
+
+                    }
+                }
+            }
+        });
+
+
+    }
+
+    /**
+     * 上传头像,文件
+     */
+    public void uploadFile(String url, HashMap<String, Object> params, final OkhttpCallback okhttpCallback) {
+
+
+        MultipartBody.Builder builder = new MultipartBody.Builder();
+        builder.setType(MultipartBody.FORM);
+        for (Map.Entry<String, Object> map : params.entrySet()) {
+            String key = map.getKey();
+            Object value = map.getValue();
+            if (value instanceof File) {
+                File file = (File) value;
+                builder.addFormDataPart(key, file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
+
+            } else {
+                builder.addFormDataPart(key, value.toString());
+            }
+        }
+        Request request = new Request.Builder().url(url).post(builder.build()).build();
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                if (okhttpCallback != null) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            okhttpCallback.failure("网络异常");
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+
+                if (okhttpCallback != null) {
+                    final String result = response.body().string();
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            okhttpCallback.success(result);
+                        }
+                    });
+                }
 
             }
         });
 
 
+    }
+
+    /**
+     * 取消所有请求，好处：节省开销：内存开销，cpu的开销（线程开销）
+     */
+    public void cancelAllTask() {
+        if (okHttpClient != null) {
+            okHttpClient.dispatcher().cancelAll();
+        }
     }
 
 

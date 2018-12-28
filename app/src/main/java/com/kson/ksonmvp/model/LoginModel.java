@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.kson.ksonmvp.api.UserApi;
 import com.kson.ksonmvp.entity.UserEntity;
+import com.kson.ksonmvp.net.OkhttpUtils;
 import com.kson.ksonmvp.net.RequestCallback;
 
 import java.io.IOException;
@@ -29,6 +30,7 @@ public class LoginModel implements IloginModel {
 
     @Override
     public void login(HashMap<String, String> params, final RequestCallback callback) {
+
 
 
         //新代码
