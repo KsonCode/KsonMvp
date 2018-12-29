@@ -3,12 +3,17 @@ package com.kson.ksonmvp.net;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.kson.ksonmvp.application.MyApp;
+import com.kson.ksonmvp.interceptor.HeaderInterceptor;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Cache;
+import okhttp3.CacheControl;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -36,6 +41,7 @@ public class OkhttpUtils {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(new HeaderInterceptor())
                 .addInterceptor(loggingInterceptor)//添加日志拦截器
                 .writeTimeout(5, TimeUnit.SECONDS)
                 .connectTimeout(5, TimeUnit.SECONDS)
@@ -68,9 +74,18 @@ public class OkhttpUtils {
     /**
      * get请求方式
      */
-    public void doGet(String url, final OkhttpCallback requestCallback) {
+    public void doGet(String url,HashMap<String, String> parmas, final OkhttpCallback requestCallback) {
 
-        Request request = new Request.Builder().url(url)
+        StringBuilder p = new StringBuilder();
+        if (parmas!=null&&parmas.size()>0){
+            for (Map.Entry<String, String> map : parmas.entrySet()) {
+
+                p.append(map.getKey()).append("=").append(map.getValue()).append("&");
+            }
+
+            System.out.println("ppppppp===="+p.toString());
+        }
+        Request request = new Request.Builder().url(url+"?"+p.toString())
                 .get().build();
 
         okHttpClient.newCall(request).enqueue(new Callback() {

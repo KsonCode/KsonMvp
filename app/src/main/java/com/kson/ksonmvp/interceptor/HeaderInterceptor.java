@@ -1,14 +1,12 @@
 package com.kson.ksonmvp.interceptor;
 
-import android.util.Log;
-
 import java.io.IOException;
 
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class AppInterceptor implements Interceptor {
+public class HeaderInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {
@@ -18,6 +16,8 @@ public class AppInterceptor implements Interceptor {
         //得到原来的response对象
         Response response = chain.proceed(request);
 
-        return response;
+
+        return response.newBuilder().removeHeader("pragma")
+                .header("Cache-Control","max-age=60").build();
     }
 }

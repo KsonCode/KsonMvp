@@ -36,19 +36,19 @@ public class OkhttpActivity extends AppCompatActivity {
     public void getRequest(View view) {
 
 
-        OkhttpUtils.getInstance().doGet(UserApi.USER_GET_GETUSERINNFO, new OkhttpCallback() {
-            @Override
-            public void failure(String msg) {
-
-            }
-
-
-
-            @Override
-            public void success(String result) {
-
-            }
-        });
+//        OkhttpUtils.getInstance().doGet(UserApi.USER_GET_GETUSERINNFO, new OkhttpCallback() {
+//            @Override
+//            public void failure(String msg) {
+//
+//            }
+//
+//
+//
+//            @Override
+//            public void success(String result) {
+//
+//            }
+//        });
 
 
     }

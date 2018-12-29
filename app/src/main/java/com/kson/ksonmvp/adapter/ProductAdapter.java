@@ -71,7 +71,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             @Override
             public void onClick(View v) {
                 if (itemListener != null) {
-                    itemListener.onItemClickListener(productVH.getLayoutPosition(), productVH.itemView);
+                    itemListener.onItemClickListener(productVH.getLayoutPosition(), v);
                 }
             }
         });
@@ -82,7 +82,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             public boolean onLongClick(View v) {
 
                 if (itemListener != null) {
-                    itemListener.onItemLongClickListener(productVH.getLayoutPosition(), productVH.itemView);
+                    itemListener.onItemLongClickListener(productVH.getLayoutPosition(), v);
                 }
                 return false;
             }

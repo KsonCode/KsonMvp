@@ -48,15 +48,16 @@ public class ProductActivity extends AppCompatActivity {
     private void initData() {
         list = new ArrayList<>();
         productAdapter = new ProductAdapter(this, list);
+        mRecyclerView.setAdapter(productAdapter);
         productAdapter.setItemListener(new ProductAdapter.ItemListener() {
             @Override
             public void onItemClickListener(int pos, View view) {
-                Toast.makeText(ProductActivity.this,"pos:"+pos,Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProductActivity.this,"pos:",Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onItemLongClickListener(int pos, View view) {
-
+                Toast.makeText(ProductActivity.this,"pos:"+pos,Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -93,7 +94,7 @@ public class ProductActivity extends AppCompatActivity {
         HashMap<String, String> params = new HashMap<>();
         params.put("keywords", "手机");
         params.put("page", page + "");
-        OkhttpUtils.getInstance().doPost(ProductApi.PRODUCT_URL, params, new OkhttpCallback() {
+        OkhttpUtils.getInstance().doGet(ProductApi.PRODUCT_URL, params, new OkhttpCallback() {
             @Override
             public void failure(String msg) {
 
